@@ -2,6 +2,7 @@
   "name": "fivem-ts-lib",
   "private": true,
   "scripts": {
+    "preinstall": "git config core.hooksPath .githooks",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",

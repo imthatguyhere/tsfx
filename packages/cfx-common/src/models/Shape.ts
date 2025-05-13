@@ -1,4 +1,12 @@
 import { Matrix } from './Matrix';
+import { Point, PointLike } from './Point';
+
+export type AnyShape = Shape<unknown>;
+
+const ORIGIN_POINT: PointLike = {
+    x: 0,
+    y: 0
+};
 
 export enum ShapeTag {
     Point
@@ -7,6 +15,7 @@ export enum ShapeTag {
 export abstract class Shape<T = unknown> {
     public abstract get tag(): ShapeTag;
     public abstract get name(): string;
+    public abstract get center(): Point;
     public abstract clone(): Shape;
     public abstract contains(other: Shape<unknown>): boolean;
 
@@ -14,12 +23,14 @@ export abstract class Shape<T = unknown> {
 
     constructor() {}
 
-    public translate(x: number, y: number): T {
-        return this.transform(Matrix.IDENTITY.translate(x, y));
+    public translate(p: { x: number; y: number }): T;
+    public translate(x: number, y: number): T;
+    public translate(a: unknown, b?: unknown): T {
+        return this.transform(Matrix.IDENTITY.translate(a as any, b as any));
     }
 
-    public rotate(angle: number, x: number = 0, y: number = 0): T {
-        return this.transform(Matrix.IDENTITY.rotate(angle, x, y));
+    public rotate(angle: number, center: PointLike = ORIGIN_POINT): T {
+        return this.transform(Matrix.IDENTITY.rotate(angle, center.x, center.y));
     }
 
     public scale(s: number): T;

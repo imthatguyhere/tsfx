@@ -64,7 +64,7 @@ export class Point extends Shape<Point> {
         return 'point';
     }
 
-    public get center(): this {
+    public get center(): Point {
         return this;
     }
 

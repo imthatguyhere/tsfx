@@ -1,1 +1,1 @@
-console.log('Hello from cfx-common!');
+export * from './models';

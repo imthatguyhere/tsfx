@@ -3,7 +3,7 @@
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": "src",
-        "types": ["@citizenfx/client", "@citizenfx/server", "@types/node"],
+        "types": ["@citizenfx/client", "@types/node"],
         "noEmit": true
     },
     "include": ["src"],

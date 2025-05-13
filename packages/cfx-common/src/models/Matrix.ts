@@ -1,4 +1,5 @@
 import { EQ } from '../utils/utils';
+import { PointLike } from './Point';
 
 const det = (a: number, b: number, c: number, d: number) => a * d - b * c;
 
@@ -122,6 +123,13 @@ export class Matrix {
      */
     public transform(x: number, y: number): [number, number] {
         return [x * this.a + y * this.c + this.tx, x * this.b + y * this.d + this.ty];
+    }
+
+    public transformMut(p: PointLike): PointLike {
+        p.x = p.x * this.a + p.y * this.c + this.tx;
+        p.y = p.x * this.b + p.y * this.d + this.ty;
+
+        return p;
     }
 
     public multiply(other: Matrix): Matrix {

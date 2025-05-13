@@ -9,7 +9,8 @@ const ORIGIN_POINT: PointLike = {
 };
 
 export enum ShapeTag {
-    Point
+    Point,
+    Vector
 }
 
 export abstract class Shape<T = unknown> {

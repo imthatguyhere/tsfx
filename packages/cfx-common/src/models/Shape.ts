@@ -1,6 +1,8 @@
 import { Matrix } from './Matrix';
 
-export enum ShapeTag {}
+export enum ShapeTag {
+    Point
+}
 
 export abstract class Shape<T = unknown> {
     public abstract get tag(): ShapeTag;

@@ -1,5 +1,5 @@
 {
-  "name": "with-tailwind",
+  "name": "fivem-ts-lib",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -22,6 +22,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "with-tailwind": "file:"
+    "fivem-ts-lib": "file:"
   }
 }

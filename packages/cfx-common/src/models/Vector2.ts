@@ -75,7 +75,7 @@ export class Vector2 extends Vector {
     }
 
     public equalTo(vector: Vector2): boolean {
-        return EQ(this.x, vector.x) && EQ(this.x, vector.x);
+        return EQ(this.x, vector.x) && EQ(this.y, vector.y);
     }
 
     public cross(vector: Vector2): number {

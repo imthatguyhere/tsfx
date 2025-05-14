@@ -8,7 +8,10 @@ export abstract class Vector extends Shape<Vector> {
         super();
     }
 
-    public abstract get length(): number;
+    public get length(): number {
+        return Math.sqrt(this.dot(this));
+    }
+
     public abstract get normalize(): Vector;
     public abstract equalTo(vector: Vector): boolean;
     public abstract distanceSquared(vector: Vector): number;

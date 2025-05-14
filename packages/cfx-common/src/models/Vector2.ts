@@ -74,10 +74,6 @@ export class Vector2 extends Vector {
         return new Point(this.x / 2, this.y / 2);
     }
 
-    public get length(): number {
-        return Math.sqrt(this.dot(this));
-    }
-
     public equalTo(vector: Vector2): boolean {
         return EQ(this.x, vector.x) && EQ(this.x, vector.x);
     }

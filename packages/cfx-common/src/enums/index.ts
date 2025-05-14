@@ -1,2 +1,1 @@
-export { BlipColour } from './BlipColour';
-export { BlipSprite } from './BlipSprite';
+export * from './blip';

@@ -1,4 +1,4 @@
-import { EQ, LT } from '../utils/utils';
+import { EQ, LT } from '../../utils/utils';
 import { Matrix } from './Matrix';
 import { Shape, ShapeTag } from './Shape';
 

@@ -1,4 +1,4 @@
-import { EQ } from '../utils/utils';
+import { EQ } from '../../utils/utils';
 import { PointLike } from './Point';
 
 const det = (a: number, b: number, c: number, d: number) => a * d - b * c;

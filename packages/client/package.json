@@ -1,5 +1,5 @@
 {
-  "name": "@fivem-ts-lib/fivem-server",
+  "name": "@tsfx/client",
   "version": "0.0.1",
   "license": "ISC",
   "main": "dist/index.js",
@@ -10,7 +10,7 @@
     "lint": "tsc"
   },
   "devDependencies": {
-    "@citizenfx/server": "^2.0.14862-1",
+    "@citizenfx/client": "^2.0.15015-1",
     "@repo/typescript-config": "*",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2"

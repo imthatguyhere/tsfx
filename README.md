@@ -4,7 +4,7 @@
     <a href="https://github.com/lynexer/tsfx/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat" alt="License: MIT">
     </a>
-    <a href="https://github.com/nativewrappers/nativewrappers/commits/master">
+    <a href="https://github.com/lynexer/tsfx/commits/master">
         <img src="https://img.shields.io/github/last-commit/lynexer/tsfx
         " alt="Last commit">
     </a>
@@ -23,7 +23,7 @@
     </a>
     <br />
     <br />
-    <a href="https://github.com/lynexer/repo_name">View Examples</a>
+    <a href="https://github.com/lynexer/tsfx">View Examples</a>
     &middot;
     <a href="https://github.com/lynexer/tsfx/issues/new?labels=bug">Report Bug</a>
     &middot;

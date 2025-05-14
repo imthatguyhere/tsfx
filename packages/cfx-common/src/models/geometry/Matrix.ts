@@ -1,4 +1,4 @@
-import { EQ } from '../../utils/utils';
+import { areApproximatelyEqual } from '../../utils';
 import { PointLike } from './Point';
 
 const det = (a: number, b: number, c: number, d: number) => a * d - b * c;
@@ -190,12 +190,12 @@ export class Matrix {
     }
 
     public equalTo(matrix: Matrix): boolean {
-        if (!EQ(this.tx, matrix.tx)) return false;
-        if (!EQ(this.ty, matrix.ty)) return false;
-        if (!EQ(this.a, matrix.a)) return false;
-        if (!EQ(this.b, matrix.b)) return false;
-        if (!EQ(this.c, matrix.c)) return false;
-        if (!EQ(this.d, matrix.d)) return false;
+        if (!areApproximatelyEqual(this.tx, matrix.tx)) return false;
+        if (!areApproximatelyEqual(this.ty, matrix.ty)) return false;
+        if (!areApproximatelyEqual(this.a, matrix.a)) return false;
+        if (!areApproximatelyEqual(this.b, matrix.b)) return false;
+        if (!areApproximatelyEqual(this.c, matrix.c)) return false;
+        if (!areApproximatelyEqual(this.d, matrix.d)) return false;
 
         return true;
     }

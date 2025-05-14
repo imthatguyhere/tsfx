@@ -1,4 +1,4 @@
-import { EQ, LT } from '../../utils/utils';
+import { areApproximatelyEqual, isDefinitelyLess } from '../../utils';
 import { Matrix } from './Matrix';
 import { Shape, ShapeTag } from './Shape';
 
@@ -84,12 +84,12 @@ export class Point extends Shape<Point> {
     }
 
     public equalTo(pt: Point): boolean {
-        return EQ(this.x, pt.x) && EQ(this.y, pt.y);
+        return areApproximatelyEqual(this.x, pt.x) && areApproximatelyEqual(this.y, pt.y);
     }
 
     public lessThan(pt: Point): boolean {
-        if (LT(this.y, pt.y)) return true;
-        if (EQ(this.y, pt.y) && LT(this.x, pt.x)) return true;
+        if (isDefinitelyLess(this.y, pt.y)) return true;
+        if (areApproximatelyEqual(this.y, pt.y) && isDefinitelyLess(this.x, pt.x)) return true;
 
         return false;
     }

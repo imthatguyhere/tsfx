@@ -1,4 +1,4 @@
-import { EQ, EQ_0 } from '../../utils/utils';
+import { areApproximatelyEqual, isApproximatelyZero } from '../../utils';
 import { Matrix } from './Matrix';
 import { Point } from './Point';
 import { Shape, ShapeTag } from './Shape';
@@ -76,7 +76,7 @@ export class Vector2 extends Vector {
     }
 
     public equalTo(vector: Vector2): boolean {
-        return EQ(this.x, vector.x) && EQ(this.y, vector.y);
+        return areApproximatelyEqual(this.x, vector.x) && areApproximatelyEqual(this.y, vector.y);
     }
 
     public cross(vector: Vector2): number {
@@ -88,7 +88,7 @@ export class Vector2 extends Vector {
     }
 
     public get normalize(): Vector2 {
-        if (!EQ_0(this.length)) {
+        if (!isApproximatelyZero(this.length)) {
             return new Vector2(this.x / this.length, this.y / this.length);
         }
 

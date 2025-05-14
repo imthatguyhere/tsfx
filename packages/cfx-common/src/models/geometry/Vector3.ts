@@ -1,4 +1,4 @@
-import { EQ, EQ_0 } from '../../utils/utils';
+import { areApproximatelyEqual, isApproximatelyZero } from '../../utils';
 import { Point } from './Point';
 import { Shape, ShapeTag } from './Shape';
 import { Vector } from './Vector';
@@ -51,7 +51,7 @@ export class Vector3 extends Vector {
     }
 
     public get normalize(): Vector3 {
-        if (!EQ_0(this.length)) {
+        if (!isApproximatelyZero(this.length)) {
             return new Vector3(this.x / this.length, this.y / this.length, this.z / this.length);
         }
 
@@ -59,7 +59,11 @@ export class Vector3 extends Vector {
     }
 
     public equalTo(vector: Vector3): boolean {
-        return EQ(this.x, vector.x) && EQ(this.y, vector.y) && EQ(this.z, vector.z);
+        return (
+            areApproximatelyEqual(this.x, vector.x) &&
+            areApproximatelyEqual(this.y, vector.y) &&
+            areApproximatelyEqual(this.z, vector.z)
+        );
     }
 
     public distanceSquared(vector: Vector3): number {

@@ -7,48 +7,49 @@ import { Vector } from './Vector';
 export class Vector2 extends Vector {
     public static EMPTY = Object.freeze(new Vector2(0, 0));
 
-    constructor(a?: unknown, b?: unknown) {
+    constructor(x?: unknown, y?: unknown) {
         super(0, 0);
 
-        const argsLength = +(a !== undefined) + +(b !== undefined);
+        if (x === undefined && y === undefined) return;
 
-        if (argsLength === 0) {
-            return;
-        }
+        if (y === undefined) {
+            if (
+                Array.isArray(x) &&
+                x.length === 2 &&
+                typeof x[0] === 'number' &&
+                typeof x[1] === 'number'
+            ) {
+                [this.x, this.y] = x;
 
-        if (argsLength === 1 && a instanceof Array && a.length === 2) {
-            if (typeof a[0] == 'number' && typeof a[1] == 'number') {
-                this.x = a[0];
-                this.y = a[1];
+                return;
+            }
+
+            if (x instanceof Object && (x as any).name === 'vector2') {
+                const { x: _x, y: _y } = x as Vector2;
+                this.x = _x;
+                this.y = _y;
+
+                return;
+            }
+
+            if (typeof x === 'number') {
+                this.x = Math.cos(x);
+                this.y = Math.sin(x);
+
                 return;
             }
         }
 
-        if (argsLength === 1 && a instanceof Object && (a as any).name === 'vector2') {
-            let { x, y } = a as Vector2;
+        if (typeof x === 'number' && typeof y === 'number') {
             this.x = x;
             this.y = y;
             return;
         }
 
-        if (argsLength === 1 && typeof a === 'number') {
-            this.x = Math.cos(a);
-            this.y = Math.sin(a);
+        if (x instanceof Point && y instanceof Point) {
+            this.x = y.x - x.x;
+            this.y = y.y - x.y;
             return;
-        }
-
-        if (argsLength === 2) {
-            if (typeof a == 'number' && typeof b == 'number') {
-                this.x = a;
-                this.y = b;
-                return;
-            }
-
-            if (a instanceof Point && b instanceof Point) {
-                this.x = b.x - a.x;
-                this.y = b.y - a.y;
-                return;
-            }
         }
 
         throw new ReferenceError('Illegal Parameters');
@@ -151,4 +152,4 @@ export class Vector2 extends Vector {
     }
 }
 
-export const vector2 = (a: any, b: any) => new Vector2(a, b);
+export const vector2 = (x: any, y: any) => new Vector2(x, y);

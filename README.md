@@ -5,8 +5,7 @@
         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat" alt="License: MIT">
     </a>
     <a href="https://github.com/lynexer/tsfx/commits/master">
-        <img src="https://img.shields.io/github/last-commit/lynexer/tsfx
-        " alt="Last commit">
+        <img src="https://img.shields.io/github/last-commit/lynexer/tsfx" alt="Last commit">
     </a>
 </p>
 
@@ -32,7 +31,7 @@
 </div>
 
 > [!CAUTION]
-> **This project is under active development and is not yet recommended for production use.** > <br />
+> **This project is under active development and is not yet recommended for production use.** <br />
 > _Breaking changes, incomplete modules, and evolving APIs should be expected._
 
 ## Overview

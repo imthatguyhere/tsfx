@@ -7,6 +7,9 @@ export type PointLike = {
     y: number;
 };
 
+/**
+ * @package https://github.com/romgrk/2d-geometry/blob/master/src/classes/Point.ts
+ */
 export class Point extends Shape<Point> {
     public static EMPTY = Object.freeze(new Point(0, 0));
 

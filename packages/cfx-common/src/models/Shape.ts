@@ -13,6 +13,9 @@ export enum ShapeTag {
     Vector
 }
 
+/**
+ * @package https://github.com/romgrk/2d-geometry/blob/master/src/classes/Shape.ts
+ */
 export abstract class Shape<T = unknown> {
     public abstract get tag(): ShapeTag;
     public abstract get name(): string;

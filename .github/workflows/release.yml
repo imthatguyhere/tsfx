@@ -1,0 +1,63 @@
+name: Release Packages
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'packages/core/package.json'
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.version_check.outputs.should_release }}
+      package_version: ${{ steps.version_check.outputs.package_version }}
+      packages_to_release: ${{ steps.version_check.outputs.packages_to_release }}
+    strategy:
+      matrix:
+        package: [core]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get latest tag
+        id: get_latest_tag
+        run: |
+          LATEST_TAG=$(git tag --sort=-creatordate | head -n 1 || echo 'v0.0.0')
+          echo "Latest tag found: $LATEST_TAG"
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+
+      - name: Get version of packages
+        id: version_check
+        run: |
+          PACKAGE_PATH="./packages/${{ matrix.package }}/package.json"
+          CURRENT_VERSION=$(jq -r '.version' "$PACKAGE_PATH")
+          echo "Package: ${{ matrix.package }}"
+          echo "Current version: $CURRENT_VERSION"
+          echo "Latest tag: ${LATEST_TAG}"
+
+          if [ "${CURRENT_VERSION}" != "${LATEST_TAG#v}" ]; then
+            echo "## Version changed for ${{ matrix.package }}"
+
+            # Collecting changed package names
+            echo "${{ matrix.package }}" >> changed_packages.txt
+
+            echo "::set-output name=should_release::true"
+            echo "::set-output name=package_version::${CURRENT_VERSION}"
+          else
+            echo "## No version change for ${{ matrix.package }}"
+            echo "::set-output name=should_release::false"
+            echo "::set-output name=package_version::${CURRENT_VERSION}"
+          fi
+
+      - name: Collect chnaged packages
+        id: collect_packages
+        run: |
+          if [ -f changed_packages.txt ]; then
+            PACKAGES_TO_RELEASE=$(paste -sd "," changed_packages.txt)
+            echo "Packages to release: $PACKAGES_TO_RELEASE"
+            echo "packages_to_release=$PACKAGES_TO_RELEASE" >> $GITHUB_ENV
+          else
+            echo "No packages to release"
+            echo "packages_to_release=" >> $GITHUB_ENV
+          fi

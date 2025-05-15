@@ -13,6 +13,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     strategy:
       matrix:
         package: ${{ fromJson(inputs.packages_matrix) }}
@@ -43,6 +46,14 @@ jobs:
       - name: Checkout code
         if: steps.decision.outputs.should_release == 'true'
         uses: actions/checkout@v4
+
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Setup Node.js
         if: steps.decision.outputs.should_release == 'true'

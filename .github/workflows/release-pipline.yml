@@ -2,6 +2,9 @@ name: TSFX Release Pipeline
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'packages/core/package.json'
 
 jobs:
   check:

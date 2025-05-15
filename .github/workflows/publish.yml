@@ -1,0 +1,48 @@
+name: Publish
+
+on:
+  workflow_call:
+    inputs:
+      packages_matrix:
+        required: true
+        type: string
+      packages_to_release:
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: ${{ fromJson(inputs.packages_matrix) }}
+    steps:
+      - name: Check package release
+        if: contains(inputs.packages_to_release, matrix.package)
+        run: |
+          echo "Package '${{ matrix.package }}' is scheduled for release."
+
+      - name: Skip Package
+        if: ${{ !contains(inputs.packages_to_release, matrix.package) }}
+        run: |
+          echo "Skipping '${{ matrix.package }}' (not changed)."
+          exit 0
+
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+
+      - run: npx turbo run lint --filter=@tsfx/${{ matrix.package }}
+      - run: npx turbo run build --filter=@tsfx/${{ matrix.package }}
+
+      # TODO: Publish to NPM
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}-dist
+          path: packages/${{ matrix.package }}/dist/

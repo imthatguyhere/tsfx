@@ -8,3 +8,10 @@ jobs:
     uses: ./.github/workflows/check-version.yml
     with:
       packages_matrix: '["core"]'
+
+  publish:
+    needs: check
+    uses: ./.github/workflows/publish.yml
+    with:
+      packages_matrix: '["core"]'
+      packages_to_release: ${{ needs.check.outputs.packages_to_release }}

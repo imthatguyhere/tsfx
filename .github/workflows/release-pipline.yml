@@ -15,3 +15,7 @@ jobs:
     with:
       packages_matrix: '["core"]'
       packages_to_release: ${{ needs.check.outputs.packages_to_release }}
+
+  release:
+    needs: publish
+    uses: ./.github/workflows/release.yml

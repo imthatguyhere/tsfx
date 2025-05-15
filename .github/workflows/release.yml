@@ -1,0 +1,39 @@
+name: Create GitHub Release
+
+on:
+  workflow_call:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Generate tag
+        id: tag
+        run: |
+          DATE=$(date +'%Y.%m.%d')
+          COUNT=$(git tag --list "v$DATE-*" | wc -l)
+          VERSION="v$DATE-$((COUNT + 1))"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "tag=$VERSION" >> $GITHUB_OUTPUT
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+
+      - name: Push tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git tag ${{ env.VERSION }}
+          git push origin ${{ env.VERSION }}
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          files: release-artifacts/**/*

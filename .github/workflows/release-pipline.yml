@@ -1,0 +1,13 @@
+name: TSFX Release Pipeline
+
+on:
+  workflow_dispatch:
+
+env:
+  PACKAGES_MATRIX_JSON: '["core"]'
+
+jobs:
+  check:
+    uses: ./.github/workflows/check-version.yml
+    with:
+      packages_matrix: ${{ env.PACKAGES_MATRIX_JSON }}

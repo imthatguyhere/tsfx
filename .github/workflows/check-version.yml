@@ -1,0 +1,56 @@
+name: Check Version
+
+on:
+  workflow_call:
+    inputs:
+      packages_matrix:
+        required: true
+        type: string
+    outputs:
+      should_release:
+        value: ${{ jobs.check.outputs.should_release }}
+      packages_to_release:
+        value: ${{ jobs.check.outputs.packages_to_release }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.set_output.outputs.should_release }}
+      packages_to_release: ${{ steps.set_output.outputs.should_release }}
+    strategy:
+      matrix:
+        package: ${{ fromJson(inputs.packages_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Check package version
+        id: version_check
+        run: |
+          PACKAGE_NAME=$(jq -r '.name' ./packages/${{ matrix.package }}/package.json)
+          CURRENT_VERSION=$(jq -r '.version' ./packages/${{ matrix.package }}/package.json)
+          PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version || echo "0.0.0")
+
+          echo "Checking $PACKAGE_NAME: local=$CURRENT_VERSION, published=$PUBLISHED_VERSION"
+
+          if [ "$CURRENT_VERSION" != "$PUBLISHED_VERSION" ]; then
+            echo "${{ matrix.package }}" >> changed.txt
+          fi
+
+      - name: Set combined output
+        id: set_output
+        run: |
+          if [ -f changed.txt ]; then
+            CHANGED=$(paste -sd "," changed.txt)
+            echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "packages_to_release=$CHANGED" >> $GITHUB_OUTPUT
+          else
+            echo "should_release=false" >> $GITHUB_OUTPUT
+            echo "packages_to_release=" >> $GITHUB_OUTPUT
+          fi

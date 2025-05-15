@@ -59,9 +59,16 @@ jobs:
 
       # TODO: Publish to NPM
 
+      - name: Structure dist for release
+        if: steps.decision.outputs.should_release == 'true'
+        run: |
+          mkdir -p release/${{ matrix.package }}
+          cp -r packages/${{ matrix.package }}/dist release/${{ matrix.package }}/
+
       - name: Upload artifacts
         if: steps.decision.outputs.should_release == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.package }}-dist
-          path: packages/${{ matrix.package }}/dist/
+          name: tsfx-packages
+          path: release/
+          retention-days: 7

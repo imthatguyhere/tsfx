@@ -23,9 +23,15 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "tag=$VERSION" >> $GITHUB_OUTPUT
 
-      - uses: actions/download-artifact@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
         with:
-          path: release-artifacts
+          name: tsfx-packages
+          path: release/
+
+      - name: Create ZIP archive
+        run: |
+          zip -r tsfx-release.zip release/
 
       - name: Push tag
         run: |
@@ -39,4 +45,4 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
-          files: release-artifacts/**/*
+          files: tsfx-release.zip

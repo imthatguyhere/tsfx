@@ -17,35 +17,50 @@ jobs:
       matrix:
         package: ${{ fromJson(inputs.packages_matrix) }}
     steps:
-      - name: Check package release
-        if: contains(inputs.packages_to_release, matrix.package)
+      - name: Decide whether to release
+        id: decision
         run: |
-          echo "Package '${{ matrix.package }}' is scheduled for release."
+          echo "Checking if '${{ matrix.package }}' is in release list..."
+          if [[ "${{ inputs.packages_to_release }}" == *"${{ matrix.package }}"* ]]; then
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Skip package
-        if: ${{ !contains(inputs.packages_to_release, matrix.package) }}
-        run: |
-          echo "Skipping '${{ matrix.package }}' (not changed)."
-          exit 0
+        if: steps.decision.outputs.should_release == 'false'
+        run: echo "Skipping '${{ matrix.package }}' (not changed)."
 
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        if: steps.decision.outputs.should_release == 'true'
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: steps.decision.outputs.should_release == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Clean install dependencies
+        if: steps.decision.outputs.should_release == 'true'
         run: |
           rm -rf node_modules package-lock.json
           npm install
 
-      - run: npx turbo run lint --filter=@tsfx/${{ matrix.package }}
-      - run: npx turbo run build --filter=@tsfx/${{ matrix.package }}
+      - name: Lint
+        if: steps.decision.outputs.should_release == 'true'
+        run: npx turbo run lint --filter=@tsfx/${{ matrix.package }}
+
+      - name: Build
+        if: steps.decision.outputs.should_release == 'true'
+        run: npx turbo run build --filter=@tsfx/${{ matrix.package }}
 
       # TODO: Publish to NPM
 
       - name: Upload artifacts
+        if: steps.decision.outputs.should_release == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.package }}-dist

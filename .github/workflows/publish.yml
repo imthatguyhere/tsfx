@@ -23,14 +23,18 @@ jobs:
       - name: Check if package should be released
         id: decision
         run: |
-          SHOULD_RELEASE=false
-          IFS=',' read -ra RELEASE_PACKAGES <<< "${{ inputs.packages_to_release }}"
-          for pkg in "${RELEASE_PACKAGES[@]}"; do
-            if [[ "$pkg" == "${{ matrix.package }}" ]]; then
-              SHOULD_RELEASE=true
-              break
-            fi
-          done
+          if [ -z "${{ inputs.packages_to_release }}" ]; then
+            SHOULD_RELEASE=false
+          else
+            IFS=',' read -ra RELEASE_PACKAGES <<< "${{ inputs.packages_to_release }}"
+            SHOULD_RELEASE=false
+            for pkg in "${RELEASE_PACKAGES[@]}"; do
+              if [[ "$pkg" == "${{ matrix.package }}" ]]; then
+                SHOULD_RELEASE=true
+                break
+              fi
+            done
+          fi
           echo "should_release=$SHOULD_RELEASE" >> $GITHUB_OUTPUT
 
       - name: Skip package

@@ -42,12 +42,12 @@ jobs:
             # Collecting changed package names
             echo "${{ matrix.package }}" >> changed_packages.txt
 
-            echo "::set-output name=should_release::true"
-            echo "::set-output name=package_version::${CURRENT_VERSION}"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "package_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
           else
             echo "## No version change for ${{ matrix.package }}"
-            echo "::set-output name=should_release::false"
-            echo "::set-output name=package_version::${CURRENT_VERSION}"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+            echo "package_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
           fi
 
       - name: Collect chnaged packages

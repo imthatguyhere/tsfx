@@ -9,9 +9,6 @@ on:
       packages_to_release:
         required: true
         type: string
-    outputs:
-      has_packages_to_release:
-        value: ${{ jobs.aggregate.outputs.has_packages_to_release }}
 
 jobs:
   publish:
@@ -84,20 +81,3 @@ jobs:
           name: tsfx-packages
           path: release/
           retention-days: 7
-
-  aggregate:
-    needs: publish
-    runs-on: ubuntu-latest
-    outputs:
-      has_packages_to_release: ${{ steps.set_output.outputs.has_packages_to_release }}
-    steps:
-      - id: set_output
-        run: |
-          HAS_RELEASE=false
-          for sr in ${{ join(needs.publish.*.outputs.should_release, ' ') }}; do
-            if [[ "$sr" == "true" ]]; then
-              HAS_RELEASE=true
-              break
-            fi
-          done
-          echo "has_packages_to_release=$HAS_RELEASE" >> $GITHUB_OUTPUT

@@ -17,6 +17,6 @@ jobs:
       packages_to_release: ${{ needs.check.outputs.packages_to_release }}
 
   release:
-    needs: publish
-    if: needs.publish.outputs.has_packages_to_release == 'true'
+    needs: [check, publish]
+    if: needs.check.outputs.packages_to_release != ''
     uses: ./.github/workflows/release.yml

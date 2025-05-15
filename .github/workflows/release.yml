@@ -46,3 +46,4 @@ jobs:
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
           files: tsfx-release.zip
+          body: 📦 This release was automatically generated for version `${{ env.VERSION }}`.

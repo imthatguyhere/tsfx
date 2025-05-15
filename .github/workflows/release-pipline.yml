@@ -18,4 +18,5 @@ jobs:
 
   release:
     needs: publish
+    if: needs.publish.outputs.has_packages_to_release == 'true'
     uses: ./.github/workflows/release.yml

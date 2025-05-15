@@ -9,27 +9,35 @@ on:
       packages_to_release:
         required: true
         type: string
+    outputs:
+      has_packages_to_release:
+        value: ${{ jobs.aggregate.outputs.has_packages_to_release }}
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         package: ${{ fromJson(inputs.packages_matrix) }}
     steps:
-      - name: Decide whether to release
+      - name: Check if package should be released
         id: decision
         run: |
-          echo "Checking if '${{ matrix.package }}' is in release list..."
-          if [[ "${{ inputs.packages_to_release }}" == *"${{ matrix.package }}"* ]]; then
-            echo "should_release=true" >> $GITHUB_OUTPUT
-          else
-            echo "should_release=false" >> $GITHUB_OUTPUT
-          fi
+          SHOULD_RELEASE=false
+          IFS=',' read -ra RELEASE_PACKAGES <<< "${{ inputs.packages_to_release }}"
+          for pkg in "${RELEASE_PACKAGES[@]}"; do
+            if [[ "$pkg" == "${{ matrix.package }}" ]]; then
+              SHOULD_RELEASE=true
+              break
+            fi
+          done
+          echo "should_release=$SHOULD_RELEASE" >> $GITHUB_OUTPUT
 
       - name: Skip package
-        if: steps.decision.outputs.should_release == 'false'
-        run: echo "Skipping '${{ matrix.package }}' (not changed)."
+        if: steps.decision.outputs.should_release != 'true'
+        run: |
+          echo "Skipping '${{ matrix.package }}' (not in release list)"
+          exit 0
 
       - name: Checkout code
         if: steps.decision.outputs.should_release == 'true'
@@ -72,3 +80,20 @@ jobs:
           name: tsfx-packages
           path: release/
           retention-days: 7
+
+  aggregate:
+    needs: publish
+    runs-on: ubuntu-latest
+    outputs:
+      has_packages_to_release: ${{ steps.set_output.outputs.has_packages_to_release }}
+    steps:
+      - id: set_output
+        run: |
+          HAS_RELEASE=false
+          for sr in ${{ join(needs.publish.*.outputs.should_release, ' ') }}; do
+            if [[ "$sr" == "true" ]]; then
+              HAS_RELEASE=true
+              break
+            fi
+          done
+          echo "has_packages_to_release=$HAS_RELEASE" >> $GITHUB_OUTPUT

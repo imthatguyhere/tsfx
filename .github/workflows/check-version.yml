@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_release: ${{ steps.set_output.outputs.should_release }}
-      packages_to_release: ${{ steps.set_output.outputs.should_release }}
+      packages_to_release: ${{ steps.set_output.outputs.packages_to_release }}
     strategy:
       matrix:
         package: ${{ fromJson(inputs.packages_matrix) }}

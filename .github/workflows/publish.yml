@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "Package '${{ matrix.package }}' is scheduled for release."
 
-      - name: Skip Package
+      - name: Skip package
         if: ${{ !contains(inputs.packages_to_release, matrix.package) }}
         run: |
           echo "Skipping '${{ matrix.package }}' (not changed)."
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
       - run: npm ci

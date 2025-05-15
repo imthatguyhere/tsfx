@@ -20,37 +20,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Get latest tag
-        id: get_latest_tag
-        run: |
-          LATEST_TAG=$(git tag --sort=-creatordate | head -n 1 || echo 'v0.0.0')
-          echo "Latest tag found: $LATEST_TAG"
-          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: Get version of packages
+      - name: Get package version and check against npm
         id: version_check
         run: |
-          PACKAGE_PATH="./packages/${{ matrix.package }}/package.json"
-          CURRENT_VERSION=$(jq -r '.version' "$PACKAGE_PATH")
-          echo "Package: ${{ matrix.package }}"
-          echo "Current version: $CURRENT_VERSION"
-          echo "Latest tag: ${LATEST_TAG}"
+          PACKAGE_NAME=$(jq -r '.name' ./packages/${{ matrix.package }}/package.json)
+          CURRENT_VERSION=$(jq -r '.version' ./packages/${{ matrix.package }}/package.json)
 
-          if [ "${CURRENT_VERSION}" != "${LATEST_TAG#v}" ]; then
-            echo "## Version changed for ${{ matrix.package }}"
+          echo "Package: $PACKAGE_NAME"
+          echo "Local version: $CURRENT_VERSION"
 
-            # Collecting changed package names
+          PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version || echo "0.0.0")
+          echo "Published version: $PUBLISHED_VERSION"
+
+          if [ "$CURRENT_VERSION" != "$PUBLISHED_VERSION" ]; then
+            echo "Version has changed — should release."
             echo "${{ matrix.package }}" >> changed_packages.txt
-
             echo "should_release=true" >> $GITHUB_OUTPUT
-            echo "package_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+            echo "package_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           else
-            echo "## No version change for ${{ matrix.package }}"
+            echo "No version change — skip release."
             echo "should_release=false" >> $GITHUB_OUTPUT
-            echo "package_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+            echo "package_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           fi
 
-      - name: Collect chnaged packages
+      - name: Collect changed packages
         id: collect_packages
         run: |
           if [ -f changed_packages.txt ]; then

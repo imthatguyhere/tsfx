@@ -62,6 +62,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@tsfx'
 
       - name: Clean install dependencies
         if: steps.decision.outputs.should_release == 'true'
@@ -81,11 +82,7 @@ jobs:
         if: steps.decision.outputs.should_release == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "NPM_CONFIG_USERCONFIG=$NPM_CONFIG_USERCONFIG"
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > "$NPM_CONFIG_USERCONFIG"
-          npm whoami
-          npm publish --access public --workspace @tsfx/${{ matrix.package }}
+        run: npm publish --access public --workspace @tsfx/${{ matrix.package }}
 
       - name: Structure dist for release
         if: steps.decision.outputs.should_release == 'true'

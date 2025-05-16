@@ -48,6 +48,13 @@ jobs:
         if: steps.decision.outputs.should_release == 'true'
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        if: steps.decision.outputs.should_release == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+          run_install: false
+
       - name: Cache turbo build setup
         uses: actions/cache@v4
         with:
@@ -61,7 +68,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
           always-auth: true
 
@@ -69,19 +76,19 @@ jobs:
         if: steps.decision.outputs.should_release == 'true'
         run: |
           rm -rf node_modules package-lock.json
-          npm install
+          pnpm install
 
       - name: Lint
         if: steps.decision.outputs.should_release == 'true'
-        run: npx turbo run lint --filter=@tsfx/${{ matrix.package }}
+        run: pnpm run lint --filter @tsfx/${{ matrix.package }}
 
       - name: Build
         if: steps.decision.outputs.should_release == 'true'
-        run: npx turbo run build --filter=@tsfx/${{ matrix.package }}
+        run: pnpm run build --filter @tsfx/${{ matrix.package }}
 
       - name: Publish to NPM
         if: steps.decision.outputs.should_release == 'true'
-        run: npm publish --access public --workspace @tsfx/${{ matrix.package }}
+        run: pnpm publish --access public --filter @tsfx/${{ matrix.package }}
 
       - name: Structure dist for release
         if: steps.decision.outputs.should_release == 'true'

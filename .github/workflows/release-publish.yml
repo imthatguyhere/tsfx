@@ -1,0 +1,135 @@
+name: Release and Publish
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'packages/**/package.json'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+          run_install: false
+      
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Publish to NPM
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Structure packages for release
+        shell: bash
+        run: |
+          mkdir -p release
+          for dir in packages/*; do
+            if [ -d "$dir" ] && [ -f "$dir/package.json" ]; then
+              is_private=$(jq -r '.private // false' "$dir/package.json")
+              if [ "$is_private" != "true" ]; then
+                pkg_name=$(basename "$dir")
+                dist_dir="$dir/dist"
+                if [ -d "$dist_dir" ]; then
+                  mkdir -p "release/$pkg_name"
+                  cp -r "$dist_dir/"* "release/$pkg_name/"
+                  echo "Copied dist/ from $pkg_name to release/$pkg_name"
+                else
+                  echo "No dist/ folder in $pkg_name, skipping."
+                fi
+              else
+                echo "Skipping private package: $dir"
+              fi
+            fi
+          done
+
+      - name: Upload artifacts
+        if: steps.changesets.outputs.published == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsfx-packages
+          path: release/
+          retention-days: 7
+
+      - name: Generate tag
+        if: steps.changesets.outputs.published == 'true'
+        id: tag
+        run: |
+          git fetch --tags
+          DATE=$(date +'%Y.%m.%d')
+          EXISTING=$(git tag --list "v$DATE-*")
+          if [ -z "$EXISTING" ]; then
+            COUNT=0
+          else
+            COUNT=$(echo "$EXISTING" | sed -E "s/v$DATE-([0-9]+)/\1/" | sort -n | tail -n 1)
+          fi
+          VERSION="v$DATE-$((COUNT + 1))"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "tag=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Download artifacts
+        if: steps.changesets.outputs.published == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: tsfx-packages
+          path: release/
+
+      - name: Create ZIP archive
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          zip -r tsfx-release.zip release/
+
+      - name: Push tag
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git tag ${{ env.VERSION }}
+          git push origin ${{ env.VERSION }}
+
+      - name: Create release
+        if: steps.changesets.outputs.published == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          files: tsfx-release.zip
+          body: 📦 This release was automatically generated for version `${{ env.VERSION }}`.

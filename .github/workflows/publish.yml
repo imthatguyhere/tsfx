@@ -16,6 +16,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     strategy:
       matrix:
         package: ${{ fromJson(inputs.packages_matrix) }}
@@ -81,9 +82,7 @@ jobs:
 
       - name: Publish to NPM
         if: steps.decision.outputs.should_release == 'true'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx turbo run release
+        run: npm publish --access public --workspace @tsfx/${{ matrix.package }}
 
       - name: Structure dist for release
         if: steps.decision.outputs.should_release == 'true'

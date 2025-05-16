@@ -71,6 +71,7 @@ jobs:
           cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
           always-auth: true
+          scope: '@tsfx'
 
       - name: Clean install dependencies
         if: steps.decision.outputs.should_release == 'true'

@@ -1,6 +1,6 @@
 {
   "name": "@tsfx/core",
-  "version": "0.14.3",
+  "version": "0.14.4",
   "license": "ISC",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -15,9 +15,5 @@
     "@repo/typescript-config": "workspace:*",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
   }
 }

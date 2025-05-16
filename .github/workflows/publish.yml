@@ -63,6 +63,7 @@ jobs:
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
           scope: '@tsfx'
+          always-auth: true
 
       - name: Clean install dependencies
         if: steps.decision.outputs.should_release == 'true'

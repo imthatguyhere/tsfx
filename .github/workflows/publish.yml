@@ -82,7 +82,9 @@ jobs:
         if: steps.decision.outputs.should_release == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public --workspace @tsfx/${{ matrix.package }}
+        run: |
+          cat $NPM_CONFIG_USERCONFIG
+          npm publish --access public --workspace @tsfx/${{ matrix.package }}
 
       - name: Structure dist for release
         if: steps.decision.outputs.should_release == 'true'

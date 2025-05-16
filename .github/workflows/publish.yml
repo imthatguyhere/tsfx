@@ -89,12 +89,7 @@ jobs:
 
       - name: Publish to NPM
         if: steps.decision.outputs.should_release == 'true'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          cat ~/.npmrc || echo "INFO: ~/.npmrc not found or unreadable."
-          pnpm whoami --registry https://registry.npmjs.org/
-          pnpm publish --access public --filter @tsfx/${{ matrix.package }}
+        run: pnpm publish --access public --filter @tsfx/${{ matrix.package }} --loglevel verbose
 
       - name: Structure dist for release
         if: steps.decision.outputs.should_release == 'true'

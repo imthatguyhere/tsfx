@@ -82,9 +82,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
+          npm config set //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
           npm whoami
-          cat ~/.npmrc
           npm publish --access public --workspace @tsfx/${{ matrix.package }}
 
       - name: Structure dist for release

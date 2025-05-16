@@ -13,8 +13,8 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
-    "publish": {
-      "dependsOn": ["^publish"]
+    "release": {
+      "dependsOn": ["^release"]
     },
     "dev": {
       "cache": false,

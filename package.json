@@ -7,7 +7,7 @@
     "lint": "turbo run lint",
     "check-types": "turbo run check-types",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "publish": "turbo run publish"
+    "release": "turbo run release"
   },
   "devDependencies": {
     "@types/node": "^22.15.17",

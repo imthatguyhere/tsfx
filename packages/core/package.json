@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "lint": "tsc",
-    "publish": "npm publish --access public"
+    "release": "npm publish --access public"
   },
   "devDependencies": {
     "@citizenfx/client": "^2.0.15015-1",

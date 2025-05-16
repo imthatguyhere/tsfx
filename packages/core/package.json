@@ -1,6 +1,6 @@
 {
   "name": "@tsfx/core",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "license": "ISC",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

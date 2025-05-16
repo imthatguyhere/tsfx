@@ -12,7 +12,7 @@
   "devDependencies": {
     "@citizenfx/client": "^2.0.15015-1",
     "@citizenfx/server": "^2.0.14862-1",
-    "@repo/typescript-config": "*",
+    "@repo/typescript-config": "workspace:*",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2"
   }

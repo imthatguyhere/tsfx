@@ -18,12 +18,5 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@11.3.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "dependencies": {
-    "fivem-ts-lib": "file:"
-  }
+  "packageManager": "pnpm@10.11.0"
 }

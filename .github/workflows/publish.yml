@@ -83,9 +83,11 @@ jobs:
         if: steps.decision.outputs.should_release == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.ci-npmrc
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> "$NPM_CONFIG_USERCONFIG"
-          echo "always-auth=true" >> "$NPM_CONFIG_USERCONFIG"
+          echo "@tsfx:registry=https://registry.npmjs.org/" > .ci-npmrc
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> .ci-npmrc
+          echo "always-auth=true" >> .ci-npmrc
           cat $NPM_CONFIG_USERCONFIG
           npm publish --access public --workspace @tsfx/${{ matrix.package }}
 

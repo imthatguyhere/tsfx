@@ -90,7 +90,7 @@ jobs:
       - name: Publish to NPM
         if: steps.decision.outputs.should_release == 'true'
         run: |
-          pnpm whoami --registry https://registry.npmjs.org/
+          pnpm whoami --registry https://registry.npmjs.org/ --scope @tsfx
           pnpm publish --access public --filter @tsfx/${{ matrix.package }}
 
       - name: Structure dist for release

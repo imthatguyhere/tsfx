@@ -27,16 +27,10 @@ export class Config {
             description: 'Output directory (default: fxserver)'
         },
         {
-            name: 'version',
-            alias: 'v',
-            type: String,
-            description: '[Reserved] Specific version'
-        },
-        {
             name: 'branch',
             alias: 'b',
             type: String,
-            description: 'Artifact branch (recommended, optional, latest'
+            description: 'Artifact branch (recommended, stable, latest)'
         },
         {
             name: 'help',

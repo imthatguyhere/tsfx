@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { Downloader } from './services/Downloader';
 import { Extractor } from './services/Extractor';

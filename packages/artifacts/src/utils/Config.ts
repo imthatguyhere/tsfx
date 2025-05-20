@@ -3,7 +3,8 @@ import commandLineArgs from 'command-line-args';
 import commandLineUsage from 'command-line-usage';
 import path from 'node:path';
 
-type BranchOption = 'recommended' | 'stable' | 'latest';
+export type BranchOption = 'recommended' | 'stable' | 'latest';
+export type OsOption = 'win32' | 'linux';
 
 export class Config {
     public options: {
@@ -16,10 +17,9 @@ export class Config {
 
     public outDir: string;
     public branch: BranchOption;
-    public os: 'win32' | 'linux';
+    public os: OsOption;
     public fileName: string;
     public artifactPath: string;
-    public downloadUrl: string;
 
     private definitions = [
         {
@@ -56,7 +56,6 @@ export class Config {
         this.outDir = path.resolve(this.options.output || 'fxserver');
         this.fileName = this.os === 'win32' ? 'server.7z' : 'fx.tar.xz';
         this.artifactPath = path.join(this.outDir, this.fileName);
-        this.downloadUrl = `https://runtime.fivem.net/artifacts/fivem/build_server_windows/master/15276-c18e4725306ab344728958708bc0f575400d0f7c/server.7z`;
     }
 
     public printHelp(): void {

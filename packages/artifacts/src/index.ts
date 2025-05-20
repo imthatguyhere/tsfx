@@ -26,7 +26,7 @@ import { TaskRunner } from './utils/TaskRunner';
 
     try {
         await runner.run(downloadTask, () =>
-            Downloader.download(config.downloadUrl, config.artifactPath)
+            Downloader.download(config.os, config.branch, config.artifactPath)
         );
 
         await runner.run(extractTask, () => Extractor.extract(config.artifactPath, config.outDir));

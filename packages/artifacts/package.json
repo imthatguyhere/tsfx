@@ -1,6 +1,6 @@
 {
   "name": "@tsfx/artifacts",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "license": "ISC",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,13 +13,19 @@
     "@repo/typescript-config": "workspace:*",
     "@types/command-line-args": "^5.2.3",
     "@types/command-line-usage": "^5.0.4",
+    "@types/log-update": "^3.1.0",
     "@types/node": "^22.15.19",
+    "@types/node-fetch": "^2.6.12",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2"
   },
   "dependencies": {
     "chalk": "^5.4.1",
+    "cli-spinners": "^3.2.0",
     "command-line-args": "^6.0.1",
-    "command-line-usage": "^7.0.3"
+    "command-line-usage": "^7.0.3",
+    "log-update": "^6.1.0",
+    "node-fetch": "^3.3.2",
+    "node-stream-zip": "^1.15.0"
   }
 }

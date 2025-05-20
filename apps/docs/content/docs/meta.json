@@ -1,0 +1,14 @@
+{
+    "pages": [
+        "---Overview---",
+        "index",
+        "---Packages---",
+        "client",
+        "server",
+        "core",
+        "hooks",
+        "artifacts",
+        "---Resources---",
+        "db"
+    ]
+}

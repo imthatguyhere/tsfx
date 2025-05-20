@@ -77,10 +77,14 @@ export class Config {
     private validateBranchOptions(): BranchOption {
         const options = ['recommended', 'stable', 'latest'];
 
+        if (!this.options.branch) return 'recommended';
+
         if (this.options.branch && options.includes(this.options.branch)) {
             return this.options.branch as BranchOption;
         } else {
-            console.error(chalk.red(`Unknown branch: '${this.options.branch}'. Using 'recommended'.`));
+            console.error(
+                chalk.red(`Unknown branch: '${this.options.branch}'. Using 'recommended'.`)
+            );
         }
 
         return 'recommended';

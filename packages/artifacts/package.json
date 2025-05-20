@@ -2,13 +2,12 @@
   "name": "@tsfx/artifacts",
   "version": "0.2.1",
   "license": "ISC",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --dts",
     "lint": "tsc"
   },
+  "bin": "dist/index.js",
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/command-line-args": "^5.2.3",

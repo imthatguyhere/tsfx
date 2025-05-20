@@ -3,6 +3,8 @@ import commandLineArgs from 'command-line-args';
 import commandLineUsage from 'command-line-usage';
 import path from 'node:path';
 
+type BranchOption = 'recommended' | 'stable' | 'latest';
+
 export class Config {
     public options: {
         output?: string;
@@ -13,7 +15,7 @@ export class Config {
     };
 
     public outDir: string;
-    public branch: string;
+    public branch: BranchOption;
     public os: 'win32' | 'linux';
     public fileName: string;
     public artifactPath: string;
@@ -50,7 +52,7 @@ export class Config {
         }
 
         this.os = process.platform === 'win32' ? 'win32' : 'linux';
-        this.branch = this.options.branch || 'latest';
+        this.branch = this.validateBranchOptions();
         this.outDir = path.resolve(this.options.output || 'fxserver');
         this.fileName = this.os === 'win32' ? 'server.7z' : 'fx.tar.xz';
         this.artifactPath = path.join(this.outDir, this.fileName);
@@ -70,5 +72,17 @@ export class Config {
         ]);
 
         console.log(usage);
+    }
+
+    private validateBranchOptions(): BranchOption {
+        const options = ['recommended', 'stable', 'latest'];
+
+        if (this.options.branch && options.includes(this.options.branch)) {
+            return this.options.branch as BranchOption;
+        } else {
+            console.error(chalk.red(`Unknown branch: '${this.options.branch}'. Using 'recommended'.`));
+        }
+
+        return 'recommended';
     }
 }

@@ -1,5 +1,5 @@
-import { execSync } from 'node:child_process';
 import zip from '7zip-min';
+import { execSync } from 'node:child_process';
 import { rmSync } from 'node:fs';
 
 export class Extractor {

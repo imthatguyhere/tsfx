@@ -63,7 +63,7 @@ export class Config {
         this.downloadUrl = ``;
     }
 
-    private printHelp(): void {
+    public printHelp(): void {
         const usage = commandLineUsage([
             {
                 header: '@tsfx/artifacts',

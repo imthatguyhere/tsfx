@@ -60,7 +60,7 @@ export class Config {
         this.outDir = path.resolve(this.options.output || 'fxserver');
         this.fileName = this.os === 'win32' ? 'server.7z' : 'fx.tar.xz';
         this.artifactPath = path.join(this.outDir, this.fileName);
-        this.downloadUrl = ``;
+        this.downloadUrl = `https://runtime.fivem.net/artifacts/fivem/build_server_windows/master/15276-c18e4725306ab344728958708bc0f575400d0f7c/server.7z`;
     }
 
     public printHelp(): void {

@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
-import Listr from 'listr';
+import Listr, { ListrTaskObject } from 'listr';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
+import Observable from 'zen-observable';
 import { Downloader } from './services/Downloader';
 import { Extractor } from './services/Extractor';
 import { Config } from './utils/Config';
 
-(async () => {
+(() => {
     const config = new Config();
 
     if (config.options.help) {
@@ -24,7 +25,7 @@ import { Config } from './utils/Config';
         {
             title: 'Downloading Artifact',
             task: () => Downloader.download(config.os, config.branch, config.artifactPath)
-        },
+        } as unknown as ListrTaskObject<Observable<string>>,
         {
             title: 'Extracting Artifact',
             task: () => Extractor.extract(config.artifactPath, config.outDir)

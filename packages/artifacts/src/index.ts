@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
+import Listr from 'listr';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { Downloader } from './services/Downloader';
 import { Extractor } from './services/Extractor';
 import { Config } from './utils/Config';
-import { TaskRunner } from './utils/TaskRunner';
 
 (async () => {
     const config = new Config();
@@ -20,20 +20,19 @@ import { TaskRunner } from './utils/TaskRunner';
 
     mkdirSync(config.outDir, { recursive: true });
 
-    const runner = new TaskRunner();
-    const downloadTask = runner.add('Downloading Artifact');
-    const extractTask = runner.add('Extracting Artifact');
+    const tasks = new Listr([
+        {
+            title: 'Downloading Artifact',
+            task: () => Downloader.download(config.os, config.branch, config.artifactPath)
+        },
+        {
+            title: 'Extracting Artifact',
+            task: () => Extractor.extract(config.artifactPath, config.outDir)
+        }
+    ]);
 
-    try {
-        await runner.run(downloadTask, () =>
-            Downloader.download(config.os, config.branch, config.artifactPath)
-        );
-
-        await runner.run(extractTask, () => Extractor.extract(config.artifactPath, config.outDir));
-
-        console.log('\nAll tasks complete.');
-    } catch {
-        console.error('\nBuild failed.');
+    tasks.run().catch((err) => {
+        console.error(err);
         process.exit(1);
-    }
+    });
 })();

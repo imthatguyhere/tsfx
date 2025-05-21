@@ -12,17 +12,17 @@
     "@repo/typescript-config": "workspace:*",
     "@types/command-line-args": "^5.2.3",
     "@types/command-line-usage": "^5.0.4",
-    "@types/log-update": "^3.1.0",
+    "@types/listr": "^0.14.9",
     "@types/node": "^22.15.21",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "7zip-min": "^2.1.0",
-    "cli-spinners": "^3.2.0",
     "command-line-args": "^6.0.1",
     "command-line-usage": "^7.0.3",
-    "log-update": "^6.1.0",
+    "listr": "^0.14.3",
+    "rxjs": "^7.8.2",
     "yoctocolors": "^2.1.1"
   }
 }

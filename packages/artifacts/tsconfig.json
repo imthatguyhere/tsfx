@@ -3,7 +3,12 @@
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": "src",
-        "types": ["@types/node", "@types/command-line-args", "@types/command-line-usage"],
+        "types": [
+            "@types/node",
+            "@types/command-line-args",
+            "@types/command-line-usage",
+            "@types/listr"
+        ],
         "noEmit": true
     },
     "include": ["src"],

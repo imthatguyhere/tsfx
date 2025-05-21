@@ -1,6 +1,6 @@
-import chalk from 'chalk';
 import spinners from 'cli-spinners';
 import logUpdate from 'log-update';
+import { dim, gray, green, red, yellow } from 'yoctocolors';
 
 const spinner = spinners.dots;
 
@@ -60,13 +60,13 @@ export class TaskRunner {
                 .map((task) => {
                     switch (task.status) {
                         case 'pending':
-                            return `  ${chalk.dim('•')} ${task.label}`;
+                            return `  ${dim('•')} ${task.label}`;
                         case 'running':
-                            return `  ${chalk.yellow(spinner.frames[this.frame])} ${chalk.yellow(task.label)}`;
+                            return `  ${yellow(spinner.frames[this.frame])} ${yellow(task.label)}`;
                         case 'done':
-                            return `  ${chalk.green('✔')} ${chalk.dim(task.label)}`;
+                            return `  ${green('✔')} ${dim(task.label)}`;
                         case 'error':
-                            return `  ${chalk.red('✖')} ${chalk.red(task.label)}\n     ${chalk.gray(task.error)}`;
+                            return `  ${red('✖')} ${red(task.label)}\n     ${gray(task.error || '')}`;
                     }
                 })
                 .join('\n')

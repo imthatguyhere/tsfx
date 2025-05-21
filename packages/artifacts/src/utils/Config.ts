@@ -1,7 +1,7 @@
-import chalk from 'chalk';
 import commandLineArgs from 'command-line-args';
 import commandLineUsage from 'command-line-usage';
 import path from 'node:path';
+import { red } from 'yoctocolors';
 
 export type BranchOption = 'recommended' | 'stable' | 'latest';
 export type OsOption = 'win32' | 'linux';
@@ -46,7 +46,7 @@ export class Config {
         this.options = commandLineArgs(this.definitions, { partial: true });
 
         if (this.options._unknown && this.options._unknown.length > 0) {
-            console.error(chalk.red(`Unknown option(s): ${this.options._unknown.join(', ')}`));
+            console.error(red(`Unknown option(s): ${this.options._unknown.join(', ')}`));
             this.printHelp();
             process.exit(1);
         }
@@ -81,9 +81,7 @@ export class Config {
         if (this.options.branch && options.includes(this.options.branch)) {
             return this.options.branch as BranchOption;
         } else {
-            console.error(
-                chalk.red(`Unknown branch: '${this.options.branch}'. Using 'recommended'.`)
-            );
+            console.error(red(`Unknown branch: '${this.options.branch}'. Using 'recommended'.`));
         }
 
         return 'recommended';

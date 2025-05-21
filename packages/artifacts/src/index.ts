@@ -2,6 +2,7 @@
 
 import Listr, { ListrTaskObject } from 'listr';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
+import { gray, green, yellow } from 'yoctocolors';
 import Observable from 'zen-observable';
 import { Downloader } from './services/Downloader';
 import { Extractor } from './services/Extractor';
@@ -32,8 +33,16 @@ import { Config } from './utils/Config';
         }
     ]);
 
-    tasks.run().catch((err) => {
-        console.error(err);
-        process.exit(1);
-    });
+    console.log(yellow(`\n${gray('<TSFX>')} Updating FiveM Artifact >>`));
+
+    tasks
+        .run()
+        .then(() => {
+            console.log(green('\nSuccessfully updated FiveM Artifact!'));
+            console.log(gray(`Extracted to: ${config.outDir}\n`));
+        })
+        .catch((err) => {
+            console.error(err);
+            process.exit(1);
+        });
 })();

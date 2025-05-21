@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { createWriteStream } from 'node:fs';
 import stream from 'node:stream';
 import { promisify } from 'node:util';

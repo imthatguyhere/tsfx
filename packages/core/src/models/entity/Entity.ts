@@ -87,6 +87,11 @@ export class Entity extends PoolObject {
         return !this.isDead();
     }
 
+    @ClientOnly
+    public setMaxSpeed(speed: number): void {
+        SetEntityMaxSpeed(this.handle, speed);
+    }
+
     public exists(): boolean {
         return DoesEntityExist(this.handle);
     }

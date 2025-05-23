@@ -1,3 +1,4 @@
+import { ClientOnly } from '../decorators';
 import { Model, PoolObject } from './game';
 import { Vector3 } from './geometry';
 
@@ -74,6 +75,16 @@ export class Entity extends PoolObject {
 
     public freeze(toggle: boolean): void {
         FreezeEntityPosition(this.handle, toggle);
+    }
+
+    @ClientOnly
+    public isDead(): boolean {
+        return IsEntityDead(this.handle);
+    }
+
+    @ClientOnly
+    public isAlive(): boolean {
+        return !this.isDead();
     }
 
     public exists(): boolean {

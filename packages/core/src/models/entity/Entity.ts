@@ -69,6 +69,10 @@ export class Entity extends PoolObject {
         SetEntityMaxHealth(this.handle, maxHealth);
     }
 
+    public get heightAboveGround(): number {
+        return GetEntityHeightAboveGround(this.handle);
+    }
+
     public get isFrozen(): boolean {
         return IsEntityPositionFrozen(this.handle);
     }

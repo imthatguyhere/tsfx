@@ -2,6 +2,9 @@
     "pages": [
         "---Overview---",
         "index",
+        "comparisons",
+        "---Typescript Wrapper---",
+        "wrapper-start",
         "---Packages---",
         "client",
         "server",

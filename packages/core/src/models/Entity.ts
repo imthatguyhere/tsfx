@@ -52,6 +52,22 @@ export class Entity extends PoolObject {
         return NetworkGetNetworkIdFromEntity(this.handle);
     }
 
+    public get health(): number {
+        return GetEntityHealth(this.handle);
+    }
+
+    public set health(health: number) {
+        SetEntityHealth(this.handle, health);
+    }
+
+    public get maxHealth(): number {
+        return GetEntityMaxHealth(this.handle);
+    }
+
+    public set maxHealth(maxHealth: number) {
+        SetEntityMaxHealth(this.handle, maxHealth);
+    }
+
     public get isFrozen(): boolean {
         return IsEntityPositionFrozen(this.handle);
     }

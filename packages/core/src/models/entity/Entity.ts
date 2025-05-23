@@ -92,6 +92,16 @@ export class Entity extends PoolObject {
         SetEntityMaxSpeed(this.handle, speed);
     }
 
+    @ClientOnly
+    public enableGravity(): void {
+        SetEntityHasGravity(this.handle, true);
+    }
+
+    @ClientOnly
+    public disableGravity(): void {
+        SetEntityHasGravity(this.handle, false);
+    }
+
     public exists(): boolean {
         return DoesEntityExist(this.handle);
     }

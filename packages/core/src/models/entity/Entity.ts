@@ -1,6 +1,6 @@
-import { ClientOnly } from '../decorators';
-import { Model, PoolObject } from './game';
-import { Vector3 } from './geometry';
+import { ClientOnly } from '../../decorators';
+import { Model, PoolObject } from '../game';
+import { Vector3 } from '../geometry';
 
 export class Entity extends PoolObject {
     constructor(handle: number) {

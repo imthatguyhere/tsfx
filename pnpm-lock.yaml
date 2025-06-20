@@ -215,6 +215,21 @@ importers:
         specifier: ^8.32.0
         version: 8.32.1(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
 
+  packages/hooks:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.15.21
+        version: 22.15.21
+      tsup:
+        specifier: ^8.5.0
+        version: 8.5.0(@swc/core@1.11.24)(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
   packages/server:
     devDependencies:
       '@citizenfx/server':

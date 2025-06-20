@@ -4,7 +4,6 @@
         "outDir": "dist",
         "rootDir": "src",
         "types": [ "@types/node", "@types/react", "@types/react-dom" ],
-        "noEmit": true,
         "jsx": "react",
         "lib": ["dom"]
     },

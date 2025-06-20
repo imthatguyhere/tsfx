@@ -4,8 +4,8 @@
   "license": "ISC",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --dts",
-    "lint": "tsc"
+    "build": "tsc",
+    "lint": "tsc --noEmit"
   },
   "bin": "dist/index.js",
   "devDependencies": {

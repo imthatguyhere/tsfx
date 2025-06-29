@@ -3,11 +3,16 @@
   "version": "0.1.0",
   "license": "ISC",
   "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*/": "./dist/*/index.js",
+    "./*": "./dist/*"
+  },
   "scripts": {
     "build": "tsc",
     "lint": "tsc --noEmit"
   },
-  "bin": "dist/index.js",
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.15.21",

@@ -1,3 +1,5 @@
+'use client';
+
 import { useContext, useEffect, useRef, useState } from 'react';
 import { NUIContext, NuiContext } from '../contexts/NuiContext';
 import type { NuiEvent } from '../providers/NuiProvider';

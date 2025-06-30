@@ -1,7 +1,7 @@
 'use client';
 
 import React, { PropsWithChildren, useCallback, useEffect, useRef } from 'react';
-import { NuiContext, type NUIContext } from '../contexts/NuiContext';
+import { NuiContext, type NuiContextValue } from '../contexts/NuiContext';
 
 export interface NuiEvent<T> {
     type: string;
@@ -11,7 +11,7 @@ export interface NuiEvent<T> {
 
 export interface NuiProviderProps {
     debug?: boolean;
-    context?: React.Context<NUIContext>;
+    context?: React.Context<NuiContextValue>;
     validateEvent?: (event: MessageEvent) => boolean;
 }
 
@@ -32,12 +32,12 @@ export const NuiProvider: React.FC<PropsWithChildren<NuiProviderProps>> = ({
         [debugEnabled]
     );
 
-    const addHandler: NUIContext['addHandler'] = (event, handler) => {
+    const addHandler: NuiContextValue['addHandler'] = (event, handler) => {
         debug('Adding handler for event:', event);
         handlers.current[event] = [...(handlers.current[event] ?? []), handler];
     };
 
-    const removeHandler: NUIContext['removeHandler'] = (event, handler) => {
+    const removeHandler: NuiContextValue['removeHandler'] = (event, handler) => {
         handlers.current[event] = (handlers.current[event] ?? []).filter(
             (existingHandler) => existingHandler !== handler
         );

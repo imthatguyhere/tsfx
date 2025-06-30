@@ -2,12 +2,12 @@
 
 import { createContext } from 'react';
 
-export interface NUIContext {
+export interface NuiContextValue {
     addHandler(event: string, handler: (event: MessageEvent) => void): void;
     removeHandler(event: string, handler: (event: MessageEvent) => void): void;
 }
 
-export const NuiContext = createContext<NUIContext>({
+export const NuiContext = createContext<NuiContextValue>({
     addHandler: () => {
         console.error('Failed to add Nui Event. The context has not been initialized.');
     },

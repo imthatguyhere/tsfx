@@ -1,2 +1,2 @@
 export * from './NuiContext';
-export * from './VisibilityContext';
+export * from './NuiVisibilityContext';

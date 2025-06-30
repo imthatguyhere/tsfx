@@ -5,7 +5,6 @@ import { NuiContext, NuiContextValue } from '../contexts/NuiContext';
 import type { NuiEvent } from '../providers/NuiProvider';
 
 export interface UseNuiEventOptions<T> {
-    event: string;
     defaultValue?: T;
     context?: React.Context<NuiContextValue>;
     callback?: (data: T) => void;
@@ -16,13 +15,20 @@ type UseNuiEventReturn<T, HasDefault extends boolean> = {
 };
 
 export function useNuiEvent<T>(
+    event: string,
     options: UseNuiEventOptions<T> & { defaultValue: T }
 ): UseNuiEventReturn<T, true>;
 
-export function useNuiEvent<T>(options: UseNuiEventOptions<T>): UseNuiEventReturn<T, false>;
+export function useNuiEvent<T>(
+    event: string,
+    options: UseNuiEventOptions<T>
+): UseNuiEventReturn<T, false>;
 
-export function useNuiEvent<T>(options: UseNuiEventOptions<T>): UseNuiEventReturn<T, boolean> {
-    const { event, defaultValue, context = NuiContext, callback } = options;
+export function useNuiEvent<T>(
+    event: string,
+    options: UseNuiEventOptions<T>
+): UseNuiEventReturn<T, boolean> {
+    const { defaultValue, context = NuiContext, callback } = options;
 
     const ctx = useContext(context);
     const [data, setData] = useState<T | undefined>(defaultValue);

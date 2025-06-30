@@ -2,6 +2,7 @@
 
 import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { NuiVisibilityContext, NuiVisibilityContextValue } from '../contexts';
+import { useNuiEvent } from '../hooks';
 
 export interface NuiVisibilityProviderProps {
     debug?: boolean;
@@ -16,6 +17,8 @@ export const NuiVisibilityProvider: React.FC<PropsWithChildren<NuiVisibilityProv
     hideKeys = ['Escape']
 }) => {
     const [visible, setVisible] = useState<boolean>(false);
+
+    useNuiEvent<boolean>('show', { callback: setVisible });
 
     const debug = useCallback(
         (...args: unknown[]) => {

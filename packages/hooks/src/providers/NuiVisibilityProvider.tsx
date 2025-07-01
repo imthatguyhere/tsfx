@@ -53,5 +53,11 @@ export const NuiVisibilityProvider: React.FC<PropsWithChildren<NuiVisibilityProv
         return () => window.removeEventListener('keydown', keyHandler);
     }, [visible]);
 
-    return <context.Provider value={{ visible, setVisible }}>{children}</context.Provider>;
+    return (
+        <context.Provider value={{ visible, setVisible }}>
+            <div style={{ visibility: visible ? 'visible' : 'hidden', height: '100%' }}>
+                {children}
+            </div>
+        </context.Provider>
+    );
 };

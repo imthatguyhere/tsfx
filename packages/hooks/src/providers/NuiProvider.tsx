@@ -4,7 +4,7 @@ import React, { PropsWithChildren, useCallback, useEffect, useRef } from 'react'
 import { NuiContext, type NuiContextValue } from '../contexts/NuiContext';
 
 export interface NuiEvent<T> {
-    type: string;
+    action: string;
     resource: string;
     payload: T;
 }
@@ -53,12 +53,12 @@ export const NuiProvider: React.FC<PropsWithChildren<NuiProviderProps>> = ({
             }
 
             const data = event.data as NuiEvent<unknown>;
-            const { type } = data;
+            const { action } = data;
 
-            const relevantHandlers = handlers.current[type] ?? [];
+            const relevantHandlers = handlers.current[action] ?? [];
 
             if (relevantHandlers.length > 0) {
-                debug(`Invoking ${relevantHandlers.length} handler(s) for event type:`, type);
+                debug(`Invoking ${relevantHandlers.length} handler(s) for event action:`, action);
                 relevantHandlers.forEach((handler) => handler(event));
             }
         };

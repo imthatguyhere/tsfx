@@ -54,6 +54,7 @@ export function useNuiEvent<T>(
         };
 
         ctx.addHandler(event, handler);
+
         return () => {
             ctx.removeHandler(event, handler);
         };

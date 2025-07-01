@@ -3,7 +3,7 @@
 import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { NuiVisibilityContext, NuiVisibilityContextValue } from '../contexts';
 import { useNuiEvent } from '../hooks';
-import { isDevBrowser } from '../services/development';
+import { isDevBrowser, sendDevNuiEvent } from '../services/development';
 import { fetchNui } from '../services/fetchNui';
 
 export interface NuiVisibilityProviderProps {
@@ -21,6 +21,7 @@ export const NuiVisibilityProvider: React.FC<PropsWithChildren<NuiVisibilityProv
     const [visible, setVisible] = useState<boolean>(false);
 
     useNuiEvent<boolean>('show', { callback: setVisible });
+    sendDevNuiEvent({ action: 'show', payload: true }, 0);
 
     const debug = useCallback(
         (...args: unknown[]) => {

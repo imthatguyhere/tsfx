@@ -5,8 +5,8 @@ import { NuiContext, type NuiContextValue } from '../contexts/NuiContext';
 
 export interface NuiEvent<T> {
     action: string;
-    resource: string;
     payload: T;
+    resource?: string;
 }
 
 export interface NuiProviderProps {

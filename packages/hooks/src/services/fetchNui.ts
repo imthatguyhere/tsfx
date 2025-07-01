@@ -1,4 +1,4 @@
-import { isDevBrowser } from './isDevBrowser';
+import { isDevBrowser } from './development';
 
 export interface FetchNuiEventOptions<T> {
     payload?: unknown;

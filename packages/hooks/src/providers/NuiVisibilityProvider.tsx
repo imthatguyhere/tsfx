@@ -3,8 +3,8 @@
 import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { NuiVisibilityContext, NuiVisibilityContextValue } from '../contexts';
 import { useNuiEvent } from '../hooks';
+import { isDevBrowser } from '../services/development';
 import { fetchNui } from '../services/fetchNui';
-import { isDevBrowser } from '../services/isDevBrowser';
 
 export interface NuiVisibilityProviderProps {
     debug?: boolean;

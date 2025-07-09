@@ -29,13 +29,13 @@ export async function fetchNui<T = unknown>(
         });
 
         if (!response.ok) {
-            console.error(`fetchNui failed: ${response.status} ${response.statusText}`);
+            console.error(`fetchNui '${event}' failed: ${response.status} ${response.statusText}`);
             return;
         }
 
         return await response.json();
     } catch (err) {
-        console.error('fetchNui error:', err);
+        console.error(`fetchNui '${event}' error:`, err);
         return;
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tsfx/hooks",
-  "version": "1.2.4",
+  "version": "1.2.6",
   "license": "ISC",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",

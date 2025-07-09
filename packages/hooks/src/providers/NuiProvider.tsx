@@ -12,7 +12,7 @@ export interface NuiEvent<T> {
 export interface NuiProviderProps {
     debug?: boolean;
     context?: React.Context<NuiContextValue>;
-    validateEvent?: (event: MessageEvent) => boolean;
+    validateEvent?: (event: MessageEvent<NuiEvent<unknown>>) => boolean;
 }
 
 export const NuiProvider: React.FC<PropsWithChildren<NuiProviderProps>> = ({
@@ -21,7 +21,7 @@ export const NuiProvider: React.FC<PropsWithChildren<NuiProviderProps>> = ({
     context = NuiContext,
     validateEvent
 }) => {
-    const handlers = useRef<Record<string, ((event: MessageEvent) => void)[]>>({});
+    const handlers = useRef<Record<string, CallableFunction[]>>({});
 
     const debug = useCallback(
         (...args: unknown[]) => {
@@ -44,7 +44,7 @@ export const NuiProvider: React.FC<PropsWithChildren<NuiProviderProps>> = ({
     };
 
     useEffect(() => {
-        const eventHandler = (event: MessageEvent) => {
+        const eventHandler = (event: MessageEvent<NuiEvent<unknown>>) => {
             debug('Received event:', JSON.stringify(event));
 
             if (validateEvent && !validateEvent(event)) {

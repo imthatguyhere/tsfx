@@ -45,7 +45,7 @@ export const NuiProvider: React.FC<PropsWithChildren<NuiProviderProps>> = ({
 
     useEffect(() => {
         const eventHandler = (event: MessageEvent) => {
-            debug('Received event:', event);
+            debug('Received event:', JSON.stringify(event));
 
             if (validateEvent && !validateEvent(event)) {
                 debug('Event validation failed:', event);

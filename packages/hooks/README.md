@@ -59,7 +59,7 @@ Send events to the client script and await a response:
 import { fetchNui } from "@tsfx/hooks";
 
 async function ping() {{
-  const res = await fetchNui("ping", {{ body: {{ now: Date.now() }} }});
+  const res = await fetchNui("ping", { payload: { now: Date.now() } });
   console.log("pong:", res);
 }}
 ```

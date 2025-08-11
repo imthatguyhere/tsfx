@@ -43,7 +43,6 @@ import { useNuiEvent } from "@tsfx/hooks";
 
 function Example() {{
   useNuiEvent("setData", {{
-    defaultValue: null,
     handler: (payload) => {{
       console.log("NUI payload:", payload);
     }},

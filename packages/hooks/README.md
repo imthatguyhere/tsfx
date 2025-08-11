@@ -190,9 +190,8 @@ export async function fetchNui<T = unknown>(
 ```
 
 **Common `options`:**
-- `body?: unknown` — payload sent with the event
-- `timeoutMs?: number` — optional timeout
-- other fields as defined by `FetchNuiEventOptions<T>` in the source
+- `payload?: unknown` — payload sent with the event
+- `debugReturn?: T` — return value when `isDevBrowser()` is true
 
 **Example:**
 

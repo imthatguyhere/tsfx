@@ -132,7 +132,7 @@ Strongly-typed listener for client → UI messages.
 ```ts
 // from source: useNuiEvent<T>(
 //   event: string,
-//   options: UseNuiEventOptions<T> & { defaultValue: T }
+//   options: UseNuiEventOptions<T>
 // ): void
 ```
 

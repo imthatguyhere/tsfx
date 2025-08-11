@@ -137,7 +137,7 @@ Strongly-typed listener for client → UI messages.
 ```
 
 **`options` fields (typical):**
-- `defaultValue: T` — required default to initialize internal state
+- `defaultValue?: T` — default value if no data is received
 - `handler?: (data: T) => void` — optional side-effect handler when event arrives
 
 **Example:**
